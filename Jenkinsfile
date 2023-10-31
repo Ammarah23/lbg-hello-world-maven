@@ -7,19 +7,24 @@ pipeline {
         }
 
         stages {
+          stage('Checkout') {
+                  steps {
+                        git branch: 'main', url: 'https://github.com/Ammarah23/lbg-hello-world-maven.git'
+                  }
+          }
           stage('Compile') {
               steps {
                  // Run Maven on a Unix agent.
                  sh "mvn clean compile"
-              }
+                }
            }
-        stage('Test') {
+          stage('Testing') {
                 steps {
-                    // Run Maven on a Unix agent.
-                    sh "mvn test"
+                 // Run Maven on a Unix agent.
+                 sh "mvn test"
                 }
             }
-        stage('SonarQube') {
+          stage('SonarQube') {
                 environment {
                         scannerHome = tool 'sonarqube'
                 }
@@ -28,8 +33,8 @@ pipeline {
                                 sh "${scannerHome}/bin/sonar-scanner"
                         }
                 }
-        }
-                stage('Package') {
+           }
+          stage('Package') {
                 steps {
                     // Run Maven on a Unix agent.
                     sh "mvn package"
